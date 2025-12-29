@@ -5,17 +5,16 @@ pub fn build(b: *std.Build) !void {
     const optimize = b.standardOptimizeOption(.{});
     const llvm = b.option(bool, "llvm", "Use LLVM backend") orelse true;
 
-    _ = b.addModule("comptime_allocator", .{
+    const mod = b.addModule("comptime_allocator", .{
         .root_source_file = b.path("src/comptime_allocator.zig"),
+        .target = target,
+        .optimize = optimize,
     });
 
     const test_step = b.step("test", "Run unit tests");
 
     const unit_tests = b.addTest(.{
-        .root_source_file = b.path("src/comptime_allocator.zig"),
-        .target = target,
-        .optimize = optimize,
-        .test_runner = .{ .path = b.path("test_runner.zig"), .mode = .simple },
+        .root_module = mod,
         .use_llvm = llvm,
     });
 

@@ -123,7 +123,7 @@ test "create" {
 
 test "comptime ArrayList" {
     const hello_world = comptime blk: {
-        var array_list = std.ArrayList(u8).init(allocator);
+        var array_list = std.array_list.Managed(u8).init(allocator);
 
         try array_list.appendSlice("Helloo");
         try array_list.appendSlice("wworld!");
